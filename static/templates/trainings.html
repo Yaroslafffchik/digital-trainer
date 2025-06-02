@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Программы тренировок</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Цифровой тренер</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/trainings">Программы тренировок</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/challenges">Челленджи</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/metrics">Метрики</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">
+    <h1>Программы тренировок</h1>
+    <form id="trainingForm" class="mb-4">
+        <div class="mb-3">
+            <label for="sessionId" class="form-label">ID сессии</label>
+            <input type="text" class="form-control" id="sessionId" required maxlength="50">
+        </div>
+        <div class="mb-3">
+            <label for="trainingName" class="form-label">Название тренировки</label>
+            <input type="text" class="form-control" id="trainingName" required maxlength="100">
+        </div>
+        <div class="mb-3">
+            <label for="trainingDescription" class="form-label">Описание</label>
+            <textarea class="form-control" id="trainingDescription" rows="2" maxlength="500"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить тренировку</button>
+    </form>
+    <h2>Список тренировок</h2>
+    <ul id="trainingList" class="list-group"></ul>
+</div>
+<!-- Модальное окно для описания -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descriptionModalLabel">Описание тренировки</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body description-text">
+                <p id="modalDescription"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
