@@ -6,9 +6,11 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
+	"math/rand"
 	"net"
 	"net/http"
 	"text/template"
+	"time"
 )
 
 func StartHTTPServer(port string, db *sql.DB) {
@@ -95,6 +97,7 @@ func StartHTTPServer(port string, db *sql.DB) {
 			json.NewEncoder(w).Encode(trainings)
 		}
 	})
+
 	// API для получения челленджей
 	r.HandleFunc("/api/challenges", func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("SELECT id, name, description, created_at FROM challenges")
@@ -172,6 +175,39 @@ func StartHTTPServer(port string, db *sql.DB) {
 			json.NewEncoder(w).Encode(metrics)
 		}
 	})
+
+	// Автотесты: отправка тестовых метрик через UDP
+	go func() {
+
+		log.Println("Автотесты включены: отправка тестовых метрик через UDP")
+		conn, err := net.Dial("udp", "localhost:1235")
+		if err != nil {
+			log.Printf("Ошибка подключения к UDP для автотестов: %v", err)
+			return
+		}
+		defer conn.Close()
+
+		for {
+			testMetric := models.Metrics{
+				SessionID: "test-session",
+				Pulse:     rand.Intn(40) + 65, // Случайный пульс от 65 до 105
+				Speed:     rand.Float64() * 7, // Случайная скорость от 0 до 7
+			}
+			data, err := json.Marshal(testMetric)
+			if err != nil {
+				log.Printf("Ошибка сериализации тестовых метрик: %v", err)
+				continue
+			}
+			_, err = conn.Write(data)
+			if err != nil {
+				log.Printf("Ошибка отправки тестовых метрик: %v", err)
+				continue
+			}
+			log.Printf("Отправлена тестовая метрика: %+v", testMetric)
+			time.Sleep(3 * time.Second) // Отправка каждые 3 секунды
+		}
+
+	}()
 
 	log.Printf("HTTP сервер запущен на %s", port)
 	log.Fatal(http.ListenAndServe(port, r))

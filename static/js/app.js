@@ -178,5 +178,8 @@ if (document.getElementById('challengeList')) {
     loadChallenges();
     setInterval(loadChallenges, 5000);
 }
-
+if (document.getElementById('metricsList') || document.getElementById('metricsChart')) {
+    loadMetrics(); // Начальная загрузка метрик
+    setInterval(loadMetrics, 2000); // Обновление каждые 2 секунды
+}
 
